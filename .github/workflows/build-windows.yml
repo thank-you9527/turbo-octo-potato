@@ -15,6 +15,22 @@ jobs:
         with:
           lfs: true
 
+      - name: Clear proxy settings
+        run: |
+          $env:HTTP_PROXY=""
+          $env:HTTPS_PROXY=""
+          $env:ALL_PROXY=""
+          $env:http_proxy=""
+          $env:https_proxy=""
+          $env:all_proxy=""
+          npm config delete proxy
+          npm config delete http-proxy
+          npm config delete https-proxy
+
+      - name: Check npm registry connectivity
+        run: |
+          curl -I https://registry.npmjs.org/@types%2fnode
+
       - name: Configure npm registry
         run: npm config set registry https://registry.npmjs.org/
 
