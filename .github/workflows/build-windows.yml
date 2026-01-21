@@ -21,6 +21,12 @@ jobs:
           node-version: "20"
           cache: "npm"
 
+      - name: Print Node and npm versions
+        shell: pwsh
+        run: |
+          node -v
+          npm -v
+
       - name: Force disable proxies for this job
         shell: pwsh
         run: |
@@ -46,13 +52,15 @@ jobs:
           npm config set fund false
           npm config set audit false
 
+          npm config get registry
+          npm config get proxy
+          npm config get https-proxy
+
           npm config list
 
       - name: Check npm registry connectivity (via npm)
         shell: pwsh
         run: |
-          node -v
-          npm -v
           npm view @types/node version
 
       - name: Install dependencies
@@ -68,6 +76,11 @@ jobs:
         run: |
           if (Test-Path dist) {
             Get-ChildItem -Recurse dist | Format-Table FullName, Length
+            Get-ChildItem -Recurse dist -Filter *.exe | Format-Table FullName, Length
+            if (!(Get-ChildItem -Recurse dist -Filter *.exe)) {
+              Write-Host "No exe files found under dist/"
+              exit 1
+            }
           } else {
             Write-Host "dist/ does not exist"
             exit 1
