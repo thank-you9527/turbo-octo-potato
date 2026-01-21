@@ -2,37 +2,12 @@
 
 This repository contains a minimal Baseware MVP implementation based on the provided spec.
 
-## Run
+## 玩家版使用方式 (Windows)
 
-```bash
-python -m baseware.app
-```
-
-The interactive prompt accepts:
-
-- `click` to simulate a hitbox click on the default ghost.
-- any other signal name to broadcast a custom world signal.
-- `quit` to shut down.
-
-## Electron desktop app (Windows)
-
-Install dependencies:
-
-```bash
-npm install
-```
-
-Run the desktop window in development mode:
-
-```bash
-npm run dev
-```
-
-Build the Windows executable:
-
-```bash
-npm run build
-```
+1. 下載並解壓縮 Baseware 發行包。
+2. 確認 `Baseware.exe` 與 `baseware_root/` 在同一層資料夾。
+3. 雙擊 `Baseware.exe` 啟動。
+4. 要新增人格時，直接把人格資料夾放到 `baseware_root/ghosts/`。
 
 ## Git LFS setup (required for PNG assets)
 

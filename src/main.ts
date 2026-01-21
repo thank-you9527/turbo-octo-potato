@@ -36,6 +36,10 @@ const createWindow = (): void => {
 
 const getBasewareRoot = (): string => {
   if (app.isPackaged) {
+    const portableRoot = path.join(path.dirname(process.execPath), "baseware_root");
+    if (fs.existsSync(portableRoot)) {
+      return portableRoot;
+    }
     return path.join(process.resourcesPath, "baseware_root");
   }
   return path.join(process.cwd(), "baseware_root");

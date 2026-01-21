@@ -6,8 +6,9 @@
   "scripts": {
     "build:ts": "tsc -p tsconfig.json",
     "copy-static": "node scripts/copy-static.js",
+    "copy-baseware-root": "node scripts/copy-baseware-root.js",
     "dev": "npm run copy-static && concurrently -k \"tsc -w\" \"wait-on dist/main.js && wait-on dist/renderer/index.html && electron .\"",
-    "build": "npm run build:ts && npm run copy-static && electron-builder --win"
+    "build": "npm run build:ts && npm run copy-static && electron-builder --win && npm run copy-baseware-root"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
@@ -20,6 +21,7 @@
   "build": {
     "appId": "com.baseware.mvp",
     "productName": "Baseware",
+    "artifactName": "Baseware.exe",
     "files": [
       "dist/**/*",
       "baseware_root/**/*",
@@ -32,10 +34,10 @@
       }
     ],
     "directories": {
-      "output": "release"
+      "output": "dist"
     },
     "win": {
-      "target": "nsis"
+      "target": "portable"
     }
   }
 }
