@@ -12,12 +12,13 @@ from baseware.renderer import BalloonWindow, CharacterWindow, Renderer
 from baseware.save_store import SaveStore
 from baseware.shell_loader import ShellLoader
 from baseware.world_signal_bus import WorldSignalBus
+from baseware.yaml_runtime import YamlGhostRunner
 
 
 @dataclass
 class GhostInstance:
     manifest: GhostManifest
-    runner: GhostRunnerStub
+    runner: object
     character: CharacterWindow
     balloon: BalloonWindow
     save_store: SaveStore
@@ -66,7 +67,7 @@ class GhostManager:
         save_path = ghost_dir / manifest.storage_path
         save_store = SaveStore(save_path)
         save_store.ensure_initialized()
-        runner = GhostRunnerStub(ghost_id)
+        runner = self._create_runner(manifest, ghost_dir, save_store)
         character = self.renderer.create_character(ghost_id, shell, self._on_click_factory(ghost_id))
         balloon = self.renderer.create_balloon(ghost_id, self._load_balloon_style(manifest))
         instance = GhostInstance(
@@ -158,3 +159,8 @@ class GhostManager:
         if not balloon_path.exists():
             return None
         return json.loads(balloon_path.read_text(encoding="utf-8")).get("style")
+
+    def _create_runner(self, manifest: GhostManifest, ghost_dir: Path, save_store: SaveStore):
+        if manifest.entry_type == "yaml":
+            return YamlGhostRunner(manifest.id, ghost_dir, save_store)
+        return GhostRunnerStub(manifest.id)

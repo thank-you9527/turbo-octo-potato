@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import threading
-import time
 from typing import Optional
 
 from baseware.models import ClockPayload, WorldSignal
@@ -39,6 +38,7 @@ class Scheduler:
                 weekday=now.weekday(),
             ).to_payload()
             self.bus.publish(WorldSignal(type="world.clock", payload=payload))
+            self.bus.publish(WorldSignal(type="world.clock.minute_change", payload=payload))
             uptime_payload = {
                 "type": "world.uptime",
                 "seconds": self.system_info.uptime_seconds(),
