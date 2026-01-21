@@ -15,6 +15,9 @@ jobs:
         with:
           lfs: true
 
+      - name: Configure npm registry
+        run: npm config set registry https://registry.npmjs.org/
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -36,3 +39,9 @@ jobs:
         with:
           name: Baseware-win-portable
           path: dist/Baseware-win-portable.zip
+
+      - name: Upload exe artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Baseware-exe
+          path: dist/Baseware.exe
