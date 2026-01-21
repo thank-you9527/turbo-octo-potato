@@ -95,4 +95,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Baseware-exe
-          path: dist/Baseware.exe
+          path: dist/*.exe
