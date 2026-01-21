@@ -37,6 +37,7 @@ class CharacterWindow:
 class BalloonWindow:
     ghost_id: str
     style: Optional[dict]
+    offset: Optional[tuple[int, int]]
 
     def say(self, text: str) -> None:
         logging.info("[%s] says: %s", self.ghost_id, text)
@@ -57,8 +58,8 @@ class Renderer:
         self._characters[ghost_id] = character
         return character
 
-    def create_balloon(self, ghost_id: str, style: Optional[dict]) -> BalloonWindow:
-        balloon = BalloonWindow(ghost_id=ghost_id, style=style)
+    def create_balloon(self, ghost_id: str, style: Optional[dict], offset: Optional[tuple[int, int]] = None) -> BalloonWindow:
+        balloon = BalloonWindow(ghost_id=ghost_id, style=style, offset=offset)
         self._balloons[ghost_id] = balloon
         return balloon
 

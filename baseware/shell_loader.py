@@ -24,7 +24,29 @@ class ShellLoader:
             ]
             surfaces[surface_id] = Surface(
                 id=surface_id,
-                file=details["file"],
+                file=details.get("file"),
                 hitboxes=hitboxes,
             )
-        return ShellDefinition(default_surface=data.get("default", "idle"), surfaces=surfaces)
+        bubble_offset = self._load_bubble_offset(shell_dir)
+        return ShellDefinition(
+            default_surface=data.get("default", "idle"),
+            surfaces=surfaces,
+            bubble_offset=bubble_offset,
+        )
+
+    def _load_bubble_offset(self, shell_dir: Path) -> tuple[int, int] | None:
+        meta_path = shell_dir / "meta.json"
+        if not meta_path.exists():
+            return None
+        meta = json.loads(meta_path.read_text(encoding="utf-8"))
+        descript = meta.get("descript", {})
+        raw_offset = descript.get("balloon.offset")
+        if not isinstance(raw_offset, str):
+            return None
+        parts = [part.strip() for part in raw_offset.split(",")]
+        if len(parts) != 2:
+            return None
+        try:
+            return int(parts[0]), int(parts[1])
+        except ValueError:
+            return None

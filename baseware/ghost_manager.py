@@ -69,7 +69,11 @@ class GhostManager:
         save_store.ensure_initialized()
         runner = self._create_runner(manifest, ghost_dir, save_store)
         character = self.renderer.create_character(ghost_id, shell, self._on_click_factory(ghost_id))
-        balloon = self.renderer.create_balloon(ghost_id, self._load_balloon_style(manifest))
+        balloon = self.renderer.create_balloon(
+            ghost_id,
+            self._load_balloon_style(manifest),
+            shell.bubble_offset,
+        )
         instance = GhostInstance(
             manifest=manifest,
             runner=runner,

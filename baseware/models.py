@@ -17,7 +17,7 @@ class Hitbox:
 @dataclass(frozen=True)
 class Surface:
     id: str
-    file: str
+    file: Optional[str]
     hitboxes: List[Hitbox]
 
 
@@ -25,6 +25,7 @@ class Surface:
 class ShellDefinition:
     default_surface: str
     surfaces: Dict[str, Surface]
+    bubble_offset: Optional[tuple[int, int]] = None
 
 
 @dataclass(frozen=True)
