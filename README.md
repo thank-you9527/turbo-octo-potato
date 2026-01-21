@@ -14,6 +14,26 @@ The interactive prompt accepts:
 - any other signal name to broadcast a custom world signal.
 - `quit` to shut down.
 
+## Electron desktop app (Windows)
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run the desktop window in development mode:
+
+```bash
+npm run dev
+```
+
+Build the Windows executable:
+
+```bash
+npm run build
+```
+
 ## Git LFS setup (required for PNG assets)
 
 This repo tracks `*.png` via Git LFS. If Git LFS is missing, images will appear as text

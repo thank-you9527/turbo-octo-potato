@@ -1,0 +1,41 @@
+{
+  "name": "baseware",
+  "version": "0.1.0",
+  "description": "Baseware MVP desktop app",
+  "main": "dist/main.js",
+  "scripts": {
+    "build:ts": "tsc -p tsconfig.json",
+    "copy-static": "node scripts/copy-static.js",
+    "dev": "npm run copy-static && concurrently -k \"tsc -w\" \"wait-on dist/main.js && wait-on dist/renderer/index.html && electron .\"",
+    "build": "npm run build:ts && npm run copy-static && electron-builder --win"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "concurrently": "^8.2.2",
+    "electron": "^30.0.8",
+    "electron-builder": "^24.13.3",
+    "typescript": "^5.4.5",
+    "wait-on": "^7.2.0"
+  },
+  "build": {
+    "appId": "com.baseware.mvp",
+    "productName": "Baseware",
+    "files": [
+      "dist/**/*",
+      "baseware_root/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "baseware_root",
+        "to": "baseware_root"
+      }
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "win": {
+      "target": "nsis"
+    }
+  }
+}
