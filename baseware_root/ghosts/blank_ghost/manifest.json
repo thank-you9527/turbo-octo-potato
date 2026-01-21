@@ -1,0 +1,20 @@
+{
+  "id": "blank_ghost",
+  "name": "Blank Ghost",
+  "version": "0.1.0",
+  "author": "Baseware",
+  "entry": {
+    "type": "yaml"
+  },
+  "shell": {
+    "default": "shell",
+    "surfaces": "surfaces.json"
+  },
+  "balloon": {
+    "default": "default_balloon"
+  },
+  "storage": {
+    "mode": "inside_ghost",
+    "path": "ghost/save.json"
+  }
+}
