@@ -1,0 +1,38 @@
+name: Build Windows Portable
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build portable exe
+        run: npm run build
+
+      - name: Package release zip
+        run: |
+          powershell -Command "Compress-Archive -Path dist/Baseware.exe,dist/baseware_root -DestinationPath dist/Baseware-win-portable.zip -Force"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Baseware-win-portable
+          path: dist/Baseware-win-portable.zip
