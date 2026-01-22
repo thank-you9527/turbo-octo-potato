@@ -26,7 +26,18 @@ declare global {
       emitWorldEvent: (type: string, payload: Record<string, unknown>) => void;
     };
   }
-}
+  payload.hitboxes.forEach((hitbox) => {
+    const overlay = document.createElement("div");
+    overlay.className = "hitbox";
+    const [x1, y1, x2, y2] = hitbox.rect;
+    overlay.style.left = `${x1}px`;
+    overlay.style.top = `${y1}px`;
+    overlay.style.width = `${Math.max(0, x2 - x1)}px`;
+    overlay.style.height = `${Math.max(0, y2 - y1)}px`;
+    overlay.textContent = hitbox.id;
+    hitboxLayer.appendChild(overlay);
+  });
+};
 
 let currentPayload: GhostPayload | null = null;
 let hitboxOverlayEnabled = false;
