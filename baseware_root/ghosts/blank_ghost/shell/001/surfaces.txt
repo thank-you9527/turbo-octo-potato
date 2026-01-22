@@ -1,0 +1,2 @@
+# surface id : file path (relative to ghost/shell/)
+0: surface0.png
