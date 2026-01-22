@@ -1,6 +1,6 @@
 :root {
   color-scheme: light;
-  --title-bar-height: 32px;
+  --title-bar-height: 24px;
 }
 
 body {
@@ -10,26 +10,31 @@ body {
   user-select: none;
 }
 
-.title-bar {
+button,
+a,
+input {
+  -webkit-app-region: no-drag;
+}
+
+#titlebar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: var(--title-bar-height);
   padding: 0 8px;
   -webkit-app-region: drag;
-  background: rgba(0, 0, 0, 0.2);
-  color: rgba(255, 255, 255, 0.9);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.85);
   font-size: 12px;
   letter-spacing: 0.3px;
 }
 
 .title-bar__button {
-  -webkit-app-region: no-drag;
   border: none;
   background: rgba(255, 255, 255, 0.2);
   color: #fff;
-  width: 28px;
-  height: 22px;
+  width: 24px;
+  height: 20px;
   border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
