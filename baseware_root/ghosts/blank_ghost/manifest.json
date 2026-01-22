@@ -7,7 +7,7 @@
     "type": "yaml"
   },
   "shell": {
-    "default": "shell",
+    "default": "shell/001",
     "surfaces": "surfaces.json"
   },
   "balloon": {
