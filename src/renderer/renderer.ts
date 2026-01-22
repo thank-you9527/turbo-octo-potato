@@ -13,6 +13,21 @@ type LoadGhostOptions = {
   shellId?: string;
 };
 
+declare global {
+  interface Window {
+    baseware: {
+      loadGhost: (options?: LoadGhostOptions) => Promise<GhostPayload>;
+      onGhostChange: (callback: (options: LoadGhostOptions) => void) => void;
+      onGhostReload: (callback: (options: LoadGhostOptions) => void) => void;
+      onHitboxToggle: (callback: (payload: { enabled: boolean }) => void) => void;
+      onShellScale: (callback: (payload: { scale: number }) => void) => void;
+      onBalloonScale: (callback: (payload: { scale: number }) => void) => void;
+      onOptionsOpen: (callback: () => void) => void;
+      emitWorldEvent: (type: string, payload: Record<string, unknown>) => void;
+    };
+  }
+}
+
 let currentPayload: GhostPayload | null = null;
 let hitboxOverlayEnabled = false;
 let shellScale = 100;
