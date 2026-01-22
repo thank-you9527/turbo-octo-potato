@@ -1,10 +1,11 @@
 {
-  "default": "idle",
+  "default_surface": "0",
   "surfaces": {
-    "idle": {
-      "file": "",
-      "hitbox": [
-        {"id": "body", "x": 0, "y": 0, "w": 400, "h": 600}
+    "0": {
+      "file": "001/surface0.png",
+      "hitboxes": [
+        { "id": "head", "rect": [110, 40, 200, 120] },
+        { "id": "body", "rect": [80, 120, 230, 360] }
       ]
     }
   }
