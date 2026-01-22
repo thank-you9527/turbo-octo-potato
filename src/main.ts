@@ -326,6 +326,10 @@ app.whenReady().then(() => {
     console.log("world.input.click", payload);
   });
 
+  ipcMain.on("app:close", () => {
+    mainWindow.close();
+  });
+
   const buildContextMenu = (): Menu => {
     const ghostIds = getGhostIds();
     const shellIds = getShellIds(currentGhostId);
@@ -450,8 +454,5 @@ app.whenReady().then(() => {
 });
 
 app.on("window-all-closed", () => {
-  if (process.platform === "darwin") {
-    return;
-  }
-  // Keep the app running until Quit is selected.
+  app.quit();
 });

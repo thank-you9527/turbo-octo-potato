@@ -99,6 +99,11 @@ const handleGhostLoad = async (options: LoadGhostOptions = {}): Promise<void> =>
 window.addEventListener("DOMContentLoaded", async () => {
   await handleGhostLoad();
 
+  const closeButton = document.getElementById("close-button") as HTMLButtonElement | null;
+  closeButton?.addEventListener("click", () => {
+    window.baseware.closeApp();
+  });
+
   const character = document.getElementById("character") as HTMLDivElement;
   character.addEventListener("click", (event) => {
     if (!currentPayload) {

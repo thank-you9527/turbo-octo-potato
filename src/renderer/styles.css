@@ -1,17 +1,54 @@
 :root {
   color-scheme: light;
+  --title-bar-height: 24px;
 }
 
 body {
   margin: 0;
   font-family: "Segoe UI", sans-serif;
   background: transparent;
+  user-select: none;
+}
+
+button,
+a,
+input {
+  -webkit-app-region: no-drag;
+}
+
+#titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--title-bar-height);
+  padding: 0 8px;
+  -webkit-app-region: drag;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 12px;
+  letter-spacing: 0.3px;
+}
+
+.title-bar__button {
+  border: none;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  width: 24px;
+  height: 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.title-bar__button:hover {
+  background: rgba(255, 80, 80, 0.7);
 }
 
 .stage {
   position: relative;
   width: 500px;
-  height: 700px;
+  height: calc(700px - var(--title-bar-height));
 }
 
 .character {

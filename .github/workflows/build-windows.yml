@@ -85,9 +85,32 @@ jobs:
           Write-Host "===== list renderer folder ====="
           Get-ChildItem src/renderer -Recurse | Format-Table FullName, Length
 
-      - name: Build portable exe
+      - name: Build unpacked Windows app
         shell: pwsh
-        run: npm run build
+        run: |
+          npm run build:ts
+          npm run copy-static
+          npx electron-builder --win --dir
+          npm run copy-baseware-root
+
+      - name: Prepare portable directory
+        shell: pwsh
+        run: |
+          if (!(Test-Path dist/win-unpacked)) {
+            Write-Host "dist/win-unpacked does not exist"
+            exit 1
+          }
+
+          if (Test-Path dist/portable) {
+            Remove-Item -Recurse -Force dist/portable
+          }
+
+          New-Item -ItemType Directory -Path dist/portable | Out-Null
+          Copy-Item -Recurse -Force dist/win-unpacked/* dist/portable/
+
+          if (!(Test-Path dist/portable/baseware_root)) {
+            Copy-Item -Recurse -Force baseware_root dist/portable/baseware_root
+          }
 
       - name: List dist outputs
         shell: pwsh
@@ -104,17 +127,10 @@ jobs:
             exit 1
           }
 
-      - name: Ensure baseware_root is packaged next to exe
-        shell: pwsh
-        run: |
-          if (!(Test-Path dist/baseware_root)) {
-            Copy-Item -Recurse -Force baseware_root dist/baseware_root
-          }
-
       - name: Package release zip
         shell: pwsh
         run: |
-          Compress-Archive -Path dist/Baseware.exe,dist/baseware_root -DestinationPath dist/Baseware-win-portable.zip -Force
+          Compress-Archive -Path dist/portable/* -DestinationPath dist/Baseware-win-portable.zip -Force
 
       - name: Upload portable zip
         uses: actions/upload-artifact@v4

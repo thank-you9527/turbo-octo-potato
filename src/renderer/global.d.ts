@@ -25,6 +25,7 @@ declare global {
       onShellScale: (callback: (payload: { scale: number }) => void) => void;
       onBalloonScale: (callback: (payload: { scale: number }) => void) => void;
       onOptionsOpen: (callback: () => void) => void;
+      closeApp: () => void;
       emitWorldEvent: (type: string, payload: Record<string, unknown>) => void;
     };
   }

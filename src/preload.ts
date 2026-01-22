@@ -36,6 +36,9 @@ contextBridge.exposeInMainWorld("baseware", {
   onOptionsOpen: (callback: () => void): void => {
     ipcRenderer.on("options:open", () => callback());
   },
+  closeApp: (): void => {
+    ipcRenderer.send("app:close");
+  },
   emitWorldEvent: (type: string, payload: Record<string, unknown>): void => {
     ipcRenderer.send(type, payload);
   },
