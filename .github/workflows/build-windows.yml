@@ -66,6 +66,25 @@ jobs:
         shell: pwsh
         run: npm install
 
+      - name: Debug - print renderer files
+        shell: pwsh
+        run: |
+          Write-Host "===== HEAD COMMIT ====="
+          git rev-parse HEAD
+
+          Write-Host "===== renderer.ts (first 120 lines) ====="
+          Get-Content src/renderer/renderer.ts -TotalCount 120
+
+          Write-Host "===== global.d.ts (first 200 lines) ====="
+          if (Test-Path src/renderer/global.d.ts) {
+            Get-Content src/renderer/global.d.ts -TotalCount 200
+          } else {
+            Write-Host "src/renderer/global.d.ts NOT FOUND"
+          }
+
+          Write-Host "===== list renderer folder ====="
+          Get-ChildItem src/renderer -Recurse | Format-Table FullName, Length
+
       - name: Build portable exe
         shell: pwsh
         run: npm run build
