@@ -13,13 +13,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          lfs: true
+          lfs: false
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: "npm"
+
+      - name: Print Node and npm versions
+        shell: pwsh
+        run: |
+          node -v
+          npm -v
 
       - name: Force disable proxies for this job
         shell: pwsh
@@ -46,18 +51,39 @@ jobs:
           npm config set fund false
           npm config set audit false
 
+          npm config get registry
+          npm config get proxy
+          npm config get https-proxy
+
           npm config list
 
       - name: Check npm registry connectivity (via npm)
         shell: pwsh
         run: |
-          node -v
-          npm -v
           npm view @types/node version
 
       - name: Install dependencies
         shell: pwsh
-        run: npm ci
+        run: npm install
+
+      - name: Debug - print renderer files
+        shell: pwsh
+        run: |
+          Write-Host "===== HEAD COMMIT ====="
+          git rev-parse HEAD
+
+          Write-Host "===== renderer.ts (first 120 lines) ====="
+          Get-Content src/renderer/renderer.ts -TotalCount 120
+
+          Write-Host "===== global.d.ts (first 200 lines) ====="
+          if (Test-Path src/renderer/global.d.ts) {
+            Get-Content src/renderer/global.d.ts -TotalCount 200
+          } else {
+            Write-Host "src/renderer/global.d.ts NOT FOUND"
+          }
+
+          Write-Host "===== list renderer folder ====="
+          Get-ChildItem src/renderer -Recurse | Format-Table FullName, Length
 
       - name: Build portable exe
         shell: pwsh
@@ -68,6 +94,11 @@ jobs:
         run: |
           if (Test-Path dist) {
             Get-ChildItem -Recurse dist | Format-Table FullName, Length
+            Get-ChildItem -Recurse dist -Filter *.exe | Format-Table FullName, Length
+            if (!(Get-ChildItem -Recurse dist -Filter *.exe)) {
+              Write-Host "No exe files found under dist/"
+              exit 1
+            }
           } else {
             Write-Host "dist/ does not exist"
             exit 1
@@ -80,19 +111,29 @@ jobs:
             Copy-Item -Recurse -Force baseware_root dist/baseware_root
           }
 
+      - name: Copy portable exe to repo root
+        shell: pwsh
+        run: |
+          if (Test-Path dist/Baseware.exe) {
+            Copy-Item -Force dist/Baseware.exe Baseware.exe
+          } else {
+            Write-Host "dist/Baseware.exe not found"
+            exit 1
+          }
+
       - name: Package release zip
         shell: pwsh
         run: |
           Compress-Archive -Path dist/Baseware.exe,dist/baseware_root -DestinationPath dist/Baseware-win-portable.zip -Force
 
-      - name: Upload artifact
+      - name: Upload portable zip
         uses: actions/upload-artifact@v4
         with:
           name: Baseware-win-portable
           path: dist/Baseware-win-portable.zip
 
-      - name: Upload exe artifact
+      - name: Upload exe artifacts (glob)
         uses: actions/upload-artifact@v4
         with:
           name: Baseware-exe
-          path: dist/Baseware.exe
+          path: dist/**/*.exe
