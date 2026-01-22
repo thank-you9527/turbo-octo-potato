@@ -1,0 +1,2 @@
+sakura.balloon.offsetx=0
+sakura.balloon.offsety=0
