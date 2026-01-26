@@ -4,13 +4,9 @@ type GhostPayload = {
   bubbleOffset: { x: number; y: number } | null;
 };
 
-declare global {
-  interface Window {
-    baseware: {
-      loadGhost: () => Promise<GhostPayload>;
-    };
-  }
-}
+type BasewareApi = {
+  loadGhost: () => Promise<GhostPayload>;
+};
 
 const applyGhost = (payload: GhostPayload): void => {
   const bubble = document.getElementById("bubble") as HTMLDivElement;
@@ -37,7 +33,8 @@ const applyGhost = (payload: GhostPayload): void => {
 };
 
 window.addEventListener("DOMContentLoaded", async () => {
-  const payload = await window.baseware.loadGhost();
+  const api = (window as Window & { baseware: BasewareApi }).baseware;
+  const payload = await api.loadGhost();
   applyGhost(payload);
 });
 
