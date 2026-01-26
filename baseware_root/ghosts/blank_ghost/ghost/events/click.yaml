@@ -1,0 +1,7 @@
+event: world.input.click
+actions:
+  - say: "你點到 ${hitbox} 了"
+  - add_var:
+      key: affinity
+      value: 1
+  - say: "好感度：${vars.affinity}"
