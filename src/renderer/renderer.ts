@@ -1,6 +1,7 @@
 type GhostPayload = {
   name: string;
   surfaceFile: string | null;
+  surfaceUrl: string | null;
   bubbleOffset: { x: number; y: number } | null;
 };
 
@@ -17,7 +18,7 @@ const applyGhost = (payload: GhostPayload): void => {
   bubbleText.textContent = `${payload.name} ready`;
 
   if (payload.surfaceFile) {
-    surface.src = `file://${payload.surfaceFile}`;
+    surface.src = payload.surfaceUrl ?? "";
     surface.style.display = "block";
     placeholder.style.display = "none";
   } else {
