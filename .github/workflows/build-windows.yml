@@ -1,0 +1,115 @@
+name: Build Windows Portable
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Force disable proxies for this job
+        shell: pwsh
+        run: |
+          @(
+            "HTTP_PROXY=",
+            "HTTPS_PROXY=",
+            "ALL_PROXY=",
+            "http_proxy=",
+            "https_proxy=",
+            "all_proxy="
+          ) | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+          npm config delete proxy       --location=global 2>$null
+          npm config delete http-proxy  --location=global 2>$null
+          npm config delete https-proxy --location=global 2>$null
+
+          npm config delete proxy       2>$null
+          npm config delete http-proxy  2>$null
+          npm config delete https-proxy 2>$null
+
+          npm config set registry https://registry.npmjs.org/
+
+          npm config set fund false
+          npm config set audit false
+
+          npm config list
+
+      - name: Check npm registry connectivity (via npm)
+        shell: pwsh
+        run: |
+          node -v
+          npm -v
+          npm view @types/node version
+
+      - name: Install dependencies
+        shell: pwsh
+        run: npm ci
+
+      - name: Build portable exe
+        shell: pwsh
+        run: npm run build
+
+      - name: Debug build outputs
+        shell: pwsh
+        run: |
+          git rev-parse HEAD
+          if (Test-Path dist) {
+            Get-ChildItem dist | Format-Table Name, Length
+          } else {
+            Write-Host "dist/ does not exist"
+            exit 1
+          }
+          if (Get-ChildItem dist -Filter "*.exe") {
+            Get-ChildItem dist -Filter "*.exe" | Format-Table Name, Length
+          } else {
+            Write-Host "No exe found in dist/"
+            exit 1
+          }
+
+      - name: List dist outputs
+        shell: pwsh
+        run: |
+          if (Test-Path dist) {
+            Get-ChildItem -Recurse dist | Format-Table FullName, Length
+          } else {
+            Write-Host "dist/ does not exist"
+            exit 1
+          }
+
+      - name: Ensure baseware_root is packaged next to exe
+        shell: pwsh
+        run: |
+          if (!(Test-Path dist/baseware_root)) {
+            Copy-Item -Recurse -Force baseware_root dist/baseware_root
+          }
+
+      - name: Package release zip
+        shell: pwsh
+        run: |
+          Compress-Archive -Path dist/UkaiHost.exe,dist/baseware_root -DestinationPath dist/UkaiHost-win-portable.zip -Force
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: UkaiHost-win-portable
+          path: dist/UkaiHost-win-portable.zip
+
+      - name: Upload exe artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: UkaiHost-exe
+          path: dist/UkaiHost.exe
