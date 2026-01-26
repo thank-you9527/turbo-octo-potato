@@ -1,0 +1,8 @@
+{
+  "id": "default_balloon",
+  "style": {
+    "background": "#ffffff",
+    "foreground": "#000000",
+    "border": "#000000"
+  }
+}
