@@ -1,0 +1,17 @@
+{
+  "default": "idle",
+  "surfaces": {
+    "idle": {
+      "file": "surface_idle.png",
+      "hitbox": [
+        {"id": "body", "x": 0, "y": 0, "w": 400, "h": 600}
+      ]
+    },
+    "smile": {
+      "file": "surface_smile.png",
+      "hitbox": [
+        {"id": "body", "x": 0, "y": 0, "w": 400, "h": 600}
+      ]
+    }
+  }
+}
