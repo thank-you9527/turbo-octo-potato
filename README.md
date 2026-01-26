@@ -123,6 +123,8 @@ This is the **How to contribute** guide (from merge step onwards):
     git lfs install
     git lfs pull
     ```
+  - If an LFS object is missing, re-run `git lfs pull` or re-download the release artifact. The Windows build workflow currently checks out without LFS as a temporary mitigation, so missing LFS objects will appear as placeholder PNGs in CI builds.
+  - The default ghost PNGs in this repo are currently tiny placeholder images to avoid missing-object failures until LFS assets are restored.
 
 - **No `dist/` or `.exe` after downloading from GitHub**
   - You downloaded the **Source code zip**. Use Releases instead.
