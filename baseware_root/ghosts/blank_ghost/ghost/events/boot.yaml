@@ -1,0 +1,4 @@
+event: world.boot
+actions:
+  - say: "（空白人格）我醒了。"
+  - set_surface: "idle"
