@@ -1,1 +1,1 @@
-"""Baseware MVP package."""
+"""UkaiHost MVP package."""

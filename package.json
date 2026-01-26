@@ -1,7 +1,7 @@
 {
-  "name": "baseware",
+  "name": "ukaihost",
   "version": "0.1.0",
-  "description": "Baseware MVP desktop app",
+  "description": "UkaiHost MVP desktop app",
   "main": "dist/main.js",
   "scripts": {
     "build:ts": "tsc -p tsconfig.json",
@@ -19,9 +19,9 @@
     "wait-on": "^7.2.0"
   },
   "build": {
-    "appId": "com.baseware.mvp",
-    "productName": "Baseware",
-    "artifactName": "Baseware.exe",
+    "appId": "com.ukaihost.app",
+    "productName": "UkaiHost",
+    "artifactName": "UkaiHost.exe",
     "files": [
       "dist/**/*",
       "baseware_root/**/*",

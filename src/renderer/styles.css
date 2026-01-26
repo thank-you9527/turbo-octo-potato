@@ -1,54 +1,17 @@
 :root {
   color-scheme: light;
-  --title-bar-height: 24px;
 }
 
 body {
   margin: 0;
   font-family: "Segoe UI", sans-serif;
   background: transparent;
-  user-select: none;
-}
-
-button,
-a,
-input {
-  -webkit-app-region: no-drag;
-}
-
-#titlebar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: var(--title-bar-height);
-  padding: 0 8px;
-  -webkit-app-region: drag;
-  background: transparent;
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 12px;
-  letter-spacing: 0.3px;
-}
-
-.title-bar__button {
-  border: none;
-  background: rgba(255, 255, 255, 0.2);
-  color: #fff;
-  width: 24px;
-  height: 20px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  line-height: 1;
-}
-
-.title-bar__button:hover {
-  background: rgba(255, 80, 80, 0.7);
 }
 
 .stage {
   position: relative;
   width: 500px;
-  height: calc(700px - var(--title-bar-height));
+  height: 700px;
 }
 
 .character {
@@ -57,8 +20,7 @@ input {
   left: 50%;
   width: 300px;
   height: 450px;
-  transform: translateX(-50%) scale(var(--shell-scale, 1));
-  transform-origin: bottom center;
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -68,22 +30,6 @@ input {
   max-width: 100%;
   max-height: 100%;
   display: none;
-}
-
-.hitbox-layer {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.hitbox {
-  position: absolute;
-  border: 2px solid rgba(255, 0, 102, 0.8);
-  color: rgba(255, 0, 102, 0.9);
-  font-size: 12px;
-  padding: 2px 4px;
-  background: rgba(255, 255, 255, 0.6);
-  border-radius: 4px;
 }
 
 .placeholder {
@@ -103,10 +49,9 @@ input {
 
 .bubble {
   position: absolute;
-  bottom: calc(520px + var(--bubble-offset-y, 0px));
-  left: calc(50% + var(--bubble-offset-x, 0px));
-  transform: translateX(-50%) scale(var(--balloon-scale, 1));
-  transform-origin: bottom center;
+  bottom: 520px;
+  left: 50%;
+  transform: translateX(-50%);
   background: rgba(255, 255, 255, 0.95);
   color: #000;
   border: 1px solid #000;

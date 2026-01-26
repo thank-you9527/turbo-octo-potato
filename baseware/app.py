@@ -13,7 +13,7 @@ from baseware.system_info import SystemInfoProvider
 from baseware.world_signal_bus import WorldSignalBus
 
 
-class BasewareApp:
+class UkaiHostApp:
     def __init__(self, baseware_root: Path) -> None:
         self.baseware_root = baseware_root
         self.signal_bus = WorldSignalBus()
@@ -65,7 +65,7 @@ class BasewareApp:
 def configure_logging(baseware_root: Path) -> None:
     logs_dir = baseware_root / "runtime" / "logs"
     logs_dir.mkdir(parents=True, exist_ok=True)
-    log_path = logs_dir / "baseware.log"
+    log_path = logs_dir / "ukaihost.log"
     logging.basicConfig(
         level=logging.INFO,
         format="%(asctime)s [%(levelname)s] %(message)s",
@@ -76,13 +76,13 @@ def configure_logging(baseware_root: Path) -> None:
 def main(baseware_root: Optional[str] = None) -> None:
     root = Path(baseware_root or Path(__file__).resolve().parent.parent / "baseware_root")
     configure_logging(root)
-    app = BasewareApp(root)
+    app = UkaiHostApp(root)
     app.boot()
     app.launch_default()
-    logging.info("Baseware running. Press Ctrl+C to exit.")
+    logging.info("UkaiHost running. Press Ctrl+C to exit.")
     try:
         while True:
-            signal = input("baseware> ").strip()
+            signal = input("ukaihost> ").strip()
             if signal == "quit":
                 break
             if signal == "click":
@@ -96,7 +96,7 @@ def main(baseware_root: Optional[str] = None) -> None:
         pass
     finally:
         app.shutdown()
-        logging.info("Baseware shutdown complete.")
+        logging.info("UkaiHost shutdown complete.")
 
 
 if __name__ == "__main__":

@@ -2,12 +2,12 @@
   "id": "blank_ghost",
   "name": "Blank Ghost",
   "version": "0.1.0",
-  "author": "Baseware",
+  "author": "UkaiHost",
   "entry": {
     "type": "yaml"
   },
   "shell": {
-    "default": "shell/001",
+    "default": "shell",
     "surfaces": "surfaces.json"
   },
   "balloon": {
