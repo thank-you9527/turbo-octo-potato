@@ -1,4 +1,4 @@
-type GhostPayload = {
+type RendererGhostPayload = {
   name: string;
   surfaceFile: string | null;
   surfaceUrl: string | null;
@@ -6,10 +6,10 @@ type GhostPayload = {
 };
 
 type BasewareApi = {
-  loadGhost: () => Promise<GhostPayload>;
+  loadGhost: () => Promise<RendererGhostPayload>;
 };
 
-const applyGhost = (payload: GhostPayload): void => {
+const applyGhost = (payload: RendererGhostPayload): void => {
   const bubble = document.getElementById("bubble") as HTMLDivElement;
   const bubbleText = document.getElementById("bubble-text") as HTMLDivElement;
   const surface = document.getElementById("surface") as HTMLImageElement;
@@ -34,7 +34,7 @@ const applyGhost = (payload: GhostPayload): void => {
 };
 
 window.addEventListener("DOMContentLoaded", async () => {
-  const api = (window as Window & { baseware: BasewareApi }).baseware;
+  const api = (window as unknown as { baseware: BasewareApi }).baseware;
   const payload = await api.loadGhost();
   applyGhost(payload);
 });
