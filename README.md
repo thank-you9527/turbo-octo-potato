@@ -79,8 +79,7 @@ Expected outputs:
 
 We use GitHub Actions to build the portable Windows executable in a clean environment.
 
-1. Run the **Generate package-lock.json** workflow (manual `workflow_dispatch`).
-2. After it commits `package-lock.json`, run the **Build Windows Portable** workflow or push a `v*` tag.
+1. Run the **Build Windows Portable** workflow or push a `v*` tag.
 3. Download artifacts from the workflow run:
    - `UkaiHost-win-portable.zip`
    - `UkaiHost.exe`
@@ -88,7 +87,7 @@ We use GitHub Actions to build the portable Windows executable in a clean enviro
 The build workflow:
 - Clears proxy settings.
 - Validates npm registry access.
-- Uses `npm ci` with the lockfile.
+- Uses `npm install` (no lockfile required).
 - Uploads build artifacts.
 
 ## How to create a release/tag so artifacts exist
@@ -141,8 +140,8 @@ This is the **How to contribute** guide (from merge step onwards):
   - The environment is likely forcing a proxy. The Windows build workflow clears proxy settings before installing.
   - If GitHub-hosted runners are blocked, configure an internal npm registry and update the workflow.
 
-- **`npm ci` fails because there is no lockfile**
-  - Run the “Generate package-lock.json” workflow and commit the result, then rerun the build.
+- **`npm install` fails because of missing dependencies**
+  - Re-run the build or ensure the npm registry is reachable in the workflow.
 
 ## Maintenance rules
 

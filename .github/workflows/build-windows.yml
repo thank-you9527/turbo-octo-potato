@@ -57,7 +57,7 @@ jobs:
 
       - name: Install dependencies
         shell: pwsh
-        run: npm ci
+        run: npm install
 
       - name: Build portable exe
         shell: pwsh
