@@ -49,12 +49,12 @@ baseware_root/
 
 ## Close vs Quit behavior (IMPORTANT)
 
-This app does **not** use a tray icon. If the window disappears, there is no tray “restore” button.
+This app uses a tray icon to restore the window when it is hidden.
 
-- **Close Window** (File menu or Alt+F4) **exits the app**.
+- **Close** (File menu or Alt+F4) **hides the app to the tray**.
 - **Quit** (File menu or Ctrl+Q) **exits the app**.
 
-If you need background-running behavior in the future, a tray icon must be added with a “Show” action.
+Tray menu includes **Show**, **Hide**, and **Quit**.
 
 ## How to build locally (dev + build)
 
