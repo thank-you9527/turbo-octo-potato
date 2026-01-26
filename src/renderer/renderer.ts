@@ -40,3 +40,5 @@ window.addEventListener("DOMContentLoaded", async () => {
   const payload = await window.baseware.loadGhost();
   applyGhost(payload);
 });
+
+export {};
