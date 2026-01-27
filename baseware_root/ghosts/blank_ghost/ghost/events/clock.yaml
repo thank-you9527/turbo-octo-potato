@@ -1,0 +1,5 @@
+event: world.clock.minute_change
+when:
+  - eq: ["${minute}", 0]
+actions:
+  - say: "整點報時：現在是 ${hour}:00"
