@@ -3,10 +3,36 @@ type RendererGhostPayload = {
   surfaceFile: string | null;
   surfaceUrl: string | null;
   bubbleOffset: { x: number; y: number } | null;
+  ghostId: string;
 };
 
 type BasewareApi = {
-  loadGhost: () => Promise<RendererGhostPayload>;
+  loadGhost: (options?: { ghostId?: string; shellId?: string }) => Promise<RendererGhostPayload>;
+  listGhosts: () => Promise<{ id: string; name: string }[]>;
+  showContextMenu: (payload: { ghostId?: string }) => Promise<void>;
+  onGhostSwitch: (callback: (ghostId: string) => void) => void;
+  onGhostReload: (callback: () => void) => void;
+  hideWindow: () => Promise<void>;
+  quitApp: () => Promise<void>;
+};
+
+let currentGhostId: string | null = null;
+
+const hud = (msg: string): void => {
+  const el = document.getElementById("debug-hud");
+  if (el) {
+    el.textContent = `HUD: ${msg}`;
+  }
+};
+
+const outline = (id: string, color: string): void => {
+  const el = document.getElementById(id);
+  if (!el) {
+    return;
+  }
+  const target = el as HTMLElement;
+  target.style.outline = `2px solid ${color}`;
+  target.style.background = "rgba(255, 0, 0, 0.10)";
 };
 
 const applyGhost = (payload: RendererGhostPayload): void => {
@@ -16,6 +42,7 @@ const applyGhost = (payload: RendererGhostPayload): void => {
   const placeholder = document.getElementById("placeholder") as HTMLDivElement;
 
   bubbleText.textContent = `${payload.name} ready`;
+  currentGhostId = payload.ghostId;
 
   if (payload.surfaceFile) {
     surface.src = payload.surfaceUrl ?? "";
@@ -33,10 +60,44 @@ const applyGhost = (payload: RendererGhostPayload): void => {
   }
 };
 
+const loadGhost = async (ghostId?: string): Promise<void> => {
+  const api = (window as unknown as { baseware: BasewareApi }).baseware;
+  const payload = await api.loadGhost(ghostId ? { ghostId } : undefined);
+  applyGhost(payload);
+};
+
 window.addEventListener("DOMContentLoaded", async () => {
   const api = (window as unknown as { baseware: BasewareApi }).baseware;
-  const payload = await api.loadGhost();
-  applyGhost(payload);
+  await loadGhost();
+  hud("ready");
+  outline("hitbox-layer", "lime");
+  outline("overlay", "cyan");
+  outline("app", "yellow");
+  outline("root", "magenta");
+  window.addEventListener(
+    "pointerdown",
+    (event) => {
+      const target = event.target as HTMLElement | null;
+      hud(`down target=${target?.id || target?.tagName || "??"} class=${target?.className || ""}`);
+    },
+    true
+  );
+  window.addEventListener(
+    "contextmenu",
+    (event) => {
+      const target = event.target as HTMLElement | null;
+      hud(`ctx target=${target?.id || target?.tagName || "??"} class=${target?.className || ""}`);
+      event.preventDefault();
+      void api.showContextMenu({ ghostId: currentGhostId ?? undefined });
+    },
+    true
+  );
+  api.onGhostSwitch((ghostId) => {
+    void loadGhost(ghostId);
+  });
+  api.onGhostReload(() => {
+    void loadGhost(currentGhostId ?? undefined);
+  });
 });
 
 export {};
